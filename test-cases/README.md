@@ -1,1 +1,25 @@
+# Test Cases
 
+This folder contains examples of test documentation created to demonstrate QA skills, including manual test design and structured testing processes.
+
+## Contents
+
+- **Test Plans** – high-level strategy documents outlining scope, objectives, and types of testing.  
+- **Test Cases** – detailed scenarios for API and Web testing, including steps, expected results, and preconditions.  
+- **Checklists** – quick reference lists for testing coverage and verification of critical functionality.  
+- **Regression Scenarios** – grouped test cases for verifying existing functionality after updates or releases.
+
+## Usage
+
+1. Open the desired document (PDF, Word, or Markdown).  
+2. Review test case steps, preconditions, and expected results.  
+3. Use as a reference for manual testing or for writing automated tests.  
+
+## Purpose
+
+These documents demonstrate ability to:
+
+- Design effective test cases  
+- Cover positive and negative scenarios  
+- Organize test documentation professionally  
+- Ensure quality and stability of the product
