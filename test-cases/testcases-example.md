@@ -1,4 +1,4 @@
-# BetterMeTestTask
+# TEST CASES EXAMPLE
 
 ### Assumptions:
 
