@@ -7,7 +7,7 @@ I focus on providing clear reproduction steps and complete technical information
 | :--- | :--- | :--- | :--- | :--- |
 | **BUG-001** | 500 status code when sending incorrect data types | Medium | API Validation Error | [Read the report](./BUG-001.md) |
 | **BUG-002** | It is possible to add an item that is not in stock to the cart | High | Functional Bug | [Read the report](./BUG-002.md) |
-| **BUG-003** | - | - | - | [Read the report](./BUG-003.md) |
+| **BUG-003** | Error in the console when trying to reserve a room for a past date | High | Runtime exception | [Read the report](./BUG-003.md) |
 | **BUG-004** | - | - | - | [Read the report](./BUG-004.md) |
 | **BUG-005** | - | - | - | [Read the report](./BUG-005.md) |
 
