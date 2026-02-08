@@ -6,7 +6,7 @@ This folder contains examples of test documentation created to demonstrate QA sk
 
 - [**Test Plan**](./test-plan-example.pdf) – high-level strategy documents outlining scope, objectives, and types of testing.  
 - [**Test Cases**](./testcases-example.md) – detailed scenarios for API and Web testing, including steps, expected results, and preconditions.  
-- **Checklists** – quick reference lists for testing coverage and verification of critical functionality.  
+- [**Checklists**](./checklist-example.md) – quick reference lists for testing coverage and verification of critical functionality.  
 - **Regression Scenarios** – grouped test cases for verifying existing functionality after updates or releases.
 
 ## Usage
