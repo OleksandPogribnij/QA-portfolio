@@ -229,7 +229,7 @@ GET https://petstore.swagger.io/v2/pet/9999999
 
 ---
 
-## PUT & POST /pet (Data update)
+## [PUT](https://petstore.swagger.io/#/pet/updatePet) & [POST](https://petstore.swagger.io/#/pet/updatePetWithForm) /pet (Data update)
 - [ ] **Complete update (PUT):** Changing all attributes of an existing animal.
 
 <details>
@@ -266,7 +266,7 @@ PUT https://petstore.swagger.io/v2/pet
 
 ---
 
-## DELETE /pet (Deleting)
+## [DELETE /pet](https://petstore.swagger.io/#/pet/deletePet) (Deleting)
 - [ ] **Deleting:** Deleting an existing object and checking the 200/204 response code.
 
 <details>
