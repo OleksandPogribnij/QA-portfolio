@@ -1,0 +1,1026 @@
+{
+  "info": {
+    "_postman_id": "0646e853-4b80-4db2-816d-5e251e70e3d8",
+    "name": "TestCollection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42612931"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "Create user",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const rand_num = Math.floor(Math.random() * 100000); \r",
+                  "\r",
+                  "const userID = pm.variables.replaceIn(\"{{$randomInt}}\");\r",
+                  "const username = `user_${rand_num}`;\r",
+                  "const firstName = pm.variables.replaceIn(\"{{$randomFirstName}}\");\r",
+                  "const lastName = pm.variables.replaceIn(\"{{$randomLastName}}\");\r",
+                  "const userEmail = `test_${rand_num}@gmail.com`;\r",
+                  "const userPassword = pm.variables.replaceIn(\"{{$randomPassword}}\");\r",
+                  "const userPhone = `+380${Math.floor(100000000 + Math.random() * 900000000)}`;\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"userID\", userID);\r",
+                  "pm.collectionVariables.set(\"firstName\", firstName);\r",
+                  "pm.collectionVariables.set(\"lastName\", lastName);\r",
+                  "pm.collectionVariables.set(\"username\", username);\r",
+                  "pm.collectionVariables.set(\"userEmail\", userEmail);\r",
+                  "pm.collectionVariables.set(\"userPassword\", userPassword);\r",
+                  "pm.collectionVariables.set(\"userPhone\", userPhone);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Checking the status code in the response body\", function() {\r",
+                  "    pm.expect(response.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Checking the correctness of the id in the message field in the response body\", function () {\r",
+                  "    pm.expect(response.message).to.eql(pm.collectionVariables.get(\"userID\"));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": {{userID}},\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{userEmail}}\",\r\n  \"password\": \"{{userPassword}}\",\r\n  \"phone\": \"{{userPhone}}\",\r\n  \"userStatus\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{userEndpoint}}",
+              "host": [
+                "{{baseUrl}}{{userEndpoint}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Checking the compliance of the response body fields\", function() {\r",
+                  "    const response = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(response.id).to.equal(Number(pm.collectionVariables.get(\"userID\")));\r",
+                  "    pm.expect(response.username).to.equal(pm.collectionVariables.get(\"username\"));\r",
+                  "    pm.expect(response.firstName).to.equal(String(pm.collectionVariables.get(\"firstName\")));\r",
+                  "    pm.expect(response.lastName).to.equal(String(pm.collectionVariables.get(\"lastName\")));\r",
+                  "    pm.expect(response.email).to.equal(String(pm.collectionVariables.get(\"userEmail\")));\r",
+                  "    pm.expect(response.phone).to.equal(String(pm.collectionVariables.get(\"userPhone\")));\r",
+                  "    pm.expect(response.userStatus).to.equal(1);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{userEndpoint}}/{{username}}",
+              "host": [
+                "{{baseUrl}}{{userEndpoint}}"
+              ],
+              "path": [
+                "{{username}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Checking the compliance of the response body fields\", function() {\r",
+                  "    const response = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(response.code).to.equal(200);\r",
+                  "    pm.expect(response.message).to.contains(\"logged in user session:\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{userEndpoint}}/login?username={{username}}&password={{userPassword}}",
+              "host": [
+                "{{baseUrl}}{{userEndpoint}}"
+              ],
+              "path": [
+                "login"
+              ],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "{{username}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPassword}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Checking the compliance of the response body fields\", function() {\r",
+                  "    const response = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(response.code).to.equal(200);\r",
+                  "    pm.expect(response.message).to.equal(\"ok\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{userEndpoint}}/logout",
+              "host": [
+                "{{baseUrl}}{{userEndpoint}}"
+              ],
+              "path": [
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Checking the status code in the response body\", function() {\r",
+                  "    pm.expect(response.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Checking the correctness of the id in the message field in the response body\", function () {\r",
+                  "    pm.expect(response.message).to.eql(pm.collectionVariables.get(\"userID\"))\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": {{userID}},\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"email\": \"{{userEmail}}\",\r\n  \"password\": \"{{$randomPassword}}\",\r\n  \"phone\": \"{{userPhone}}\",\r\n  \"userStatus\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{userEndpoint}}/{{username}}",
+              "host": [
+                "{{baseUrl}}{{userEndpoint}}"
+              ],
+              "path": [
+                "{{username}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Checking the status code in the response body\", function() {\r",
+                  "    pm.expect(response.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Checking the correctness of the username in the message field of the response body\", function () {\r",
+                  "    pm.expect(response.message).to.eql(String(pm.collectionVariables.get(\"username\")));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "packages": {},
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{userEndpoint}}/{{username}}",
+              "host": [
+                "{{baseUrl}}{{userEndpoint}}"
+              ],
+              "path": [
+                "{{username}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "pet",
+      "item": [
+        {
+          "name": "Add a pet",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const petId = Math.floor(Math.random() * 100000);\r",
+                  "const categories = [\r",
+                  "  { id: 1, name: \"Dogs\" },\r",
+                  "  { id: 2, name: \"Cats\" },\r",
+                  "  { id: 3, name: \"Birds\" },\r",
+                  "  { id: 4, name: \"Fish\" }\r",
+                  "];\r",
+                  "const randomCategory =\r",
+                  "  categories[Math.floor(Math.random() * categories.length)];\r",
+                  "const categoryId = randomCategory.id;\r",
+                  "const categoryName = randomCategory.name;\r",
+                  "const petNames = [\"Jack\", \"Buddy\", \"Max\", \"Leo\", \"Mia\", \"Charlie\"];\r",
+                  "const petName = petNames[Math.floor(Math.random() * petNames.length)];\r",
+                  "const photoUrl = \"https://example.com/pet.jpg\"; \r",
+                  "const tags = [\r",
+                  "  { id: 1, name: \"friendly\" },\r",
+                  "  { id: 2, name: \"cute\" },\r",
+                  "  { id: 3, name: \"angry\" },\r",
+                  "  { id: 4, name: \"vaccinated\" }\r",
+                  "];\r",
+                  "const randomTag = tags[Math.floor(Math.random() * tags.length)];\r",
+                  "const tagId = randomTag.id;\r",
+                  "const tagName = randomTag.name;\r",
+                  "const statuses = [\"available\", \"pending\", \"sold\"];\r",
+                  "const status = statuses[Math.floor(Math.random() * statuses.length)];\r",
+                  "\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"petId\", petId);\r",
+                  "pm.collectionVariables.set(\"categoryId\", categoryId);\r",
+                  "pm.collectionVariables.set(\"categoryName\", categoryName);\r",
+                  "pm.collectionVariables.set(\"petName\", petName);\r",
+                  "pm.collectionVariables.set(\"photoUrl\", photoUrl);\r",
+                  "pm.collectionVariables.set(\"tagId\", tagId);\r",
+                  "pm.collectionVariables.set(\"tagName\", tagName);\r",
+                  "pm.collectionVariables.set(\"status\", status);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Verification of the correctness of the response body\", function () {\r",
+                  "    pm.expect(response.id).to.eql(pm.collectionVariables.get(\"petId\"));\r",
+                  "    pm.expect(response.category.id).to.eql(pm.collectionVariables.get(\"categoryId\"));\r",
+                  "    pm.expect(response.category.name).to.eql(pm.collectionVariables.get(\"categoryName\"));\r",
+                  "    pm.expect(response.name).to.eql(pm.collectionVariables.get(\"petName\"));\r",
+                  "    pm.expect(response.photoUrls[0]).to.eql(pm.collectionVariables.get(\"photoUrl\"));\r",
+                  "    pm.expect(response.tags[0].id).to.eql(pm.collectionVariables.get(\"tagId\"));\r",
+                  "    pm.expect(response.tags[0].name).to.eql(pm.collectionVariables.get(\"tagName\"));\r",
+                  "    pm.expect(response.status).to.eql(pm.collectionVariables.get(\"status\"));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": {{petId}},\r\n  \"category\": {\r\n    \"id\": {{categoryId}},\r\n    \"name\": \"{{categoryName}}\"\r\n  },\r\n  \"name\": \"{{petName}}\",\r\n  \"photoUrls\": [\r\n    \"{{photoUrl}}\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": {{tagId}},\r\n      \"name\": \"{{tagName}}\"\r\n    }\r\n  ],\r\n  \"status\": \"{{status}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{petEndpoint}}",
+              "host": [
+                "{{baseUrl}}{{petEndpoint}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get pet by id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Verification of the correctness of the response body\", function () {\r",
+                  "    pm.expect(response.id).to.eql(pm.collectionVariables.get(\"petId\"));\r",
+                  "    pm.expect(response.category.id).to.eql(pm.collectionVariables.get(\"categoryId\"));\r",
+                  "    pm.expect(response.category.name).to.eql(pm.collectionVariables.get(\"categoryName\"));\r",
+                  "    pm.expect(response.name).to.eql(pm.collectionVariables.get(\"petName\"));\r",
+                  "    pm.expect(response.photoUrls[0]).to.eql(pm.collectionVariables.get(\"photoUrl\"));\r",
+                  "    pm.expect(response.tags[0].id).to.eql(pm.collectionVariables.get(\"tagId\"));\r",
+                  "    pm.expect(response.tags[0].name).to.eql(pm.collectionVariables.get(\"tagName\"));\r",
+                  "    pm.expect(response.status).to.eql(pm.collectionVariables.get(\"status\"));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{petEndpoint}}/{{petId}}",
+              "host": [
+                "{{baseUrl}}{{petEndpoint}}"
+              ],
+              "path": [
+                "{{petId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update pet fields",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const petNames = [\"Jack\", \"Buddy\", \"Max\", \"Leo\", \"Mia\", \"Charlie\"];\r",
+                  "const petName = petNames[Math.floor(Math.random() * petNames.length)];\r",
+                  "const statuses = [\"available\", \"pending\", \"sold\"];\r",
+                  "const status = statuses[Math.floor(Math.random() * statuses.length)];\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"petName\", petName);\r",
+                  "pm.collectionVariables.set(\"status\", status);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Verification of the correctness of the response body\", function () {\r",
+                  "    pm.expect(response.code).to.eql(200);\r",
+                  "    pm.expect(response.message).to.eql(pm.collectionVariables.get(\"petId\").toString());\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "{{petName}}",
+                  "type": "text",
+                  "uuid": "c6417615-3f8a-4087-afcf-8e39f218da65"
+                },
+                {
+                  "key": "status",
+                  "value": "{{status}}",
+                  "type": "text",
+                  "uuid": "b48a1f53-f6ac-4647-8fec-e20d44fdcf81"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{petEndpoint}}/{{petId}}",
+              "host": [
+                "{{baseUrl}}{{petEndpoint}}"
+              ],
+              "path": [
+                "{{petId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get pet by status",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Verification of the correctness of the response body\", function () {\r",
+                  "    const myPet = response.find(pet => pet.id == pm.collectionVariables.get(\"petId\") && pet.name == pm.collectionVariables.get(\"petName\"));\r",
+                  "\r",
+                  "    pm.expect(myPet).to.not.be.undefined;\r",
+                  "    pm.expect(myPet.category.id).to.eql(pm.collectionVariables.get(\"categoryId\"));\r",
+                  "    pm.expect(myPet.category.name).to.eql(pm.collectionVariables.get(\"categoryName\"));\r",
+                  "    pm.expect(myPet.photoUrls[0]).to.eql(pm.collectionVariables.get(\"photoUrl\"));\r",
+                  "    pm.expect(myPet.tags[0].id).to.eql(pm.collectionVariables.get(\"tagId\"));\r",
+                  "    pm.expect(myPet.tags[0].name).to.eql(pm.collectionVariables.get(\"tagName\"));\r",
+                  "    pm.expect(myPet.status).to.eql(pm.collectionVariables.get(\"status\"));\r",
+                  "\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": {{petId}},\r\n  \"category\": {\r\n    \"id\": {{categoryId}},\r\n    \"name\": \"{{categoryName}}\"\r\n  },\r\n  \"name\": \"{{petName}}\",\r\n  \"photoUrls\": [\r\n    \"{{photoUrl}}\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": {{tagId}},\r\n      \"name\": \"{{tagName}}\"\r\n    }\r\n  ],\r\n  \"status\": \"{{status}}\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{petEndpoint}}/findByStatus?status={{status}}",
+              "host": [
+                "{{baseUrl}}{{petEndpoint}}"
+              ],
+              "path": [
+                "findByStatus"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "{{status}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Verification of the correctness of the response body\", function () {\r",
+                  "    pm.expect(response.code).to.eql(200);\r",
+                  "    pm.expect(response.message).to.eql(pm.collectionVariables.get(\"petId\").toString());\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": {{petId}},\r\n  \"category\": {\r\n    \"id\": {{categoryId}},\r\n    \"name\": \"{{categoryName}}\"\r\n  },\r\n  \"name\": \"{{petName}}\",\r\n  \"photoUrls\": [\r\n    \"{{photoUrl}}\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": {{tagId}},\r\n      \"name\": \"{{tagName}}\"\r\n    }\r\n  ],\r\n  \"status\": \"{{status}}\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{petEndpoint}}/{{petId}}",
+              "host": [
+                "{{baseUrl}}{{petEndpoint}}"
+              ],
+              "path": [
+                "{{petId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "store",
+      "item": [
+        {
+          "name": "Return inventories by status",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{storeEndpoint}}{{inventoryEndpoint}}",
+              "host": [
+                "{{baseUrl}}{{storeEndpoint}}{{inventoryEndpoint}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add new order",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const orderId = Math.floor(Math.random() * 100000);\r",
+                  "const quantity = Math.floor(Math.random() * 10);\r",
+                  "const shipDate = new Date().toISOString();\r",
+                  "const statuses = [\"placed\", \"approved\", \"delivered\"];\r",
+                  "const status = statuses[Math.floor(Math.random() * statuses.length)];\r",
+                  "const complete = Math.random() < 0.5;\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"orderId\", orderId);\r",
+                  "pm.collectionVariables.set(\"quantity\", quantity);\r",
+                  "pm.collectionVariables.set(\"shipDate\", shipDate);\r",
+                  "pm.collectionVariables.set(\"orderStatus\", status);\r",
+                  "pm.collectionVariables.set(\"complete\", complete);\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Verification of the correctness of the response body\", function () {\r",
+                  "    pm.expect(response.id).to.eql(pm.collectionVariables.get(\"orderId\"));\r",
+                  "    pm.expect(response.petId).to.eql(pm.collectionVariables.get(\"petId\"));\r",
+                  "    pm.expect(response.quantity).to.eql(pm.collectionVariables.get(\"quantity\"));\r",
+                  "    pm.expect(response.status).to.eql(pm.collectionVariables.get(\"orderStatus\"));\r",
+                  "    pm.expect(response.complete).to.eql(pm.collectionVariables.get(\"complete\"));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": {{orderId}},\r\n  \"petId\": {{petId}},\r\n  \"quantity\": {{quantity}},\r\n  \"shipDate\": \"{{shipDate}}\",\r\n  \"status\": \"{{orderStatus}}\",\r\n  \"complete\": {{complete}}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{storeEndpoint}}{{orderEndpoint}}",
+              "host": [
+                "{{baseUrl}}{{storeEndpoint}}{{orderEndpoint}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Find order by id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Verification of the correctness of the response body\", function () {\r",
+                  "    pm.expect(response.id).to.eql(pm.collectionVariables.get(\"orderId\"));\r",
+                  "    pm.expect(response.petId).to.eql(pm.collectionVariables.get(\"petId\"));\r",
+                  "    pm.expect(response.quantity).to.eql(pm.collectionVariables.get(\"quantity\"));\r",
+                  "    pm.expect(response.status).to.eql(pm.collectionVariables.get(\"orderStatus\"));\r",
+                  "    pm.expect(response.complete).to.eql(pm.collectionVariables.get(\"complete\"));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{storeEndpoint}}{{orderEndpoint}}/{{orderId}}",
+              "host": [
+                "{{baseUrl}}{{storeEndpoint}}{{orderEndpoint}}"
+              ],
+              "path": [
+                "{{orderId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Checking the status code in the response\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{storeEndpoint}}{{orderEndpoint}}/{{orderId}}",
+              "host": [
+                "{{baseUrl}}{{storeEndpoint}}{{orderEndpoint}}"
+              ],
+              "path": [
+                "{{orderId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "if (!pm.collectionVariables.get(\"baseUrl\")) {\r",
+          "    pm.collectionVariables.set(\r",
+          "        \"baseUrl\",\r",
+          "        \"https://petstore.swagger.io/v2\"\r",
+          "    );\r",
+          "}\r",
+          "\r",
+          "if (!pm.collectionVariables.get(\"userEndpoint\")) {\r",
+          "    pm.collectionVariables.set(\r",
+          "        \"userEndpoint\",\r",
+          "        \"/user\"\r",
+          "    );\r",
+          "}\r",
+          "\r",
+          "if (!pm.collectionVariables.get(\"storeEndpoint\")) {\r",
+          "    pm.collectionVariables.set(\r",
+          "        \"storeEndpoint\",\r",
+          "        \"/store\"\r",
+          "    );\r",
+          "}\r",
+          "\r",
+          "if (!pm.collectionVariables.get(\"petEndpoint\")) {\r",
+          "    pm.collectionVariables.set(\r",
+          "        \"petEndpoint\",\r",
+          "        \"/pet\"\r",
+          "    );\r",
+          "}\r",
+          "\r",
+          "if (!pm.collectionVariables.get(\"orderEndpoint\")) {\r",
+          "    pm.collectionVariables.set(\r",
+          "        \"orderEndpoint\",\r",
+          "        \"/order\"\r",
+          "    );\r",
+          "}\r",
+          "\r",
+          "if (!pm.collectionVariables.get(\"inventoryEndpoint\")) {\r",
+          "    pm.collectionVariables.set(\r",
+          "        \"inventoryEndpoint\",\r",
+          "        \"/inventory\"\r",
+          "    );\r",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "userEndpoint",
+      "value": ""
+    },
+    {
+      "key": "storeEndpoint",
+      "value": ""
+    },
+    {
+      "key": "petEndpoint",
+      "value": ""
+    },
+    {
+      "key": "complete",
+      "value": ""
+    },
+    {
+      "key": "orderEndpoint",
+      "value": ""
+    },
+    {
+      "key": "inventoryEndpoint",
+      "value": ""
+    },
+    {
+      "key": "userID",
+      "value": ""
+    },
+    {
+      "key": "firstName",
+      "value": ""
+    },
+    {
+      "key": "lastName",
+      "value": ""
+    },
+    {
+      "key": "username",
+      "value": ""
+    },
+    {
+      "key": "userEmail",
+      "value": ""
+    },
+    {
+      "key": "userPassword",
+      "value": ""
+    },
+    {
+      "key": "userPhone",
+      "value": ""
+    },
+    {
+      "key": "petId",
+      "value": ""
+    },
+    {
+      "key": "categoryId",
+      "value": ""
+    },
+    {
+      "key": "categoryName",
+      "value": ""
+    },
+    {
+      "key": "petName",
+      "value": ""
+    },
+    {
+      "key": "photoUrl",
+      "value": ""
+    },
+    {
+      "key": "tagId",
+      "value": ""
+    },
+    {
+      "key": "tagName",
+      "value": ""
+    },
+    {
+      "key": "status",
+      "value": ""
+    },
+    {
+      "key": "orderId",
+      "value": ""
+    },
+    {
+      "key": "quantity",
+      "value": ""
+    },
+    {
+      "key": "shipDate",
+      "value": ""
+    },
+    {
+      "key": "orderStatus",
+      "value": ""
+    }
+  ]
+}
